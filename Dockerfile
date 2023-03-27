@@ -5,4 +5,4 @@ RUN true && \
 
 COPY entrypoint.sh /
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
