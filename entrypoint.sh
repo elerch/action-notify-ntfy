@@ -1,6 +1,7 @@
 #!/bin/sh
 
 env | sort
+echo "status should be: $1"
 #GITHUB_RUN_NUMBER
 # Job status: success/failure/cancelled
 

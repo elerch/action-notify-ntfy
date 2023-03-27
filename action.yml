@@ -8,10 +8,10 @@ inputs:
   topic:
     description: 'Ntfy topic'
     required: true
-  status:
-    description: 'Job status. Use ${{ job.status }} for most cases'
-    required: true
-    default: '${{ job.status }}'
+  # status:
+  #   description: 'Job status. Use ${{ job.status }} for most cases'
+  #   required: true
+  #   default: '${{ job.status }}'
   user:
     description: 'Username for ntfy server'
     required: true # should be false, but we'll do authenticated sessions only for now
@@ -21,3 +21,5 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+    - ${{ job.status }}
