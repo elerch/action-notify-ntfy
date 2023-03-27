@@ -1,24 +1,32 @@
 #!/bin/sh
 
-env | sort
-echo "status should be: $1"
+echo "Notifying job status: $1"
+
 #GITHUB_RUN_NUMBER
 # Job status: success/failure/cancelled
 
-      #   if: success()
-      #   run: |
-      #          curl -u '${{ secrets.NTFY_USER }}:${{ secrets.NTFY_PASSWORD }}' \
-      #          -H 'Title: Job Succeeded. ${{ github.repository }}/${{ github.ref }}' \
-      #          -H "Tags: +1" \
-      #          -d 'Job succeeded. See '$GITHUB_SERVER_URL'/${{ github.repository }}/actions/runs/${{ github.run_number }} for details' \
-      #          '${{ secrets.NTFY_HOST }}${{ secrets.NTFY_TOPIC }}'
-      # - name: Failure Notification
-      #   if: failure()
-      #   run: |
-      #          curl -u '${{ secrets.NTFY_USER }}:${{ secrets.NTFY_PASSWORD }}' \
-      #          -H "Priority: high" \
-      #          -H 'Title: Job FAILED. ${{ github.repository }}/${{ github.ref }}' \
-      #          -H "Tags: warning" \
-      #          -d 'Job failed. See '$GITHUB_SERVER_URL'/${{ github.repository }}/actions/runs/${{ github.run_number }} for details' \
-      #          '${{ secrets.NTFY_HOST }}${{ secrets.NTFY_TOPIC }}'
-      #
+if [ "$1" = "success" ]; then
+  curl -u "${INPUT_USER}:${INPUT__PASSWORD}" \
+    -H "Title: Job Succeeded. ${GITHUB_REPOSITORY}/${GITHUB_REF}" \
+    -H "Tags: +1" \
+    -d "Job succeeded. See $GITHUB_SERVER_URL/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_NUMBER} for details" \
+    "${INPUT_HOST}${INPUT_TOPIC}"
+elif [ "$1" = "failure" ]; then
+  curl -u "${INPUT_USER}:${INPUT__PASSWORD}" \
+    -H "Title: Job FAILED. ${GITHUB_REPOSITORY}/${GITHUB_REF}" \
+    -H "Priority: high" \
+    -H "Tags: warning" \
+    -d "Job failed. See $GITHUB_SERVER_URL/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_NUMBER} for details" \
+    "${INPUT_HOST}${INPUT_TOPIC}"
+elif [ "$1" = "cancelled" ]; then
+  # square or x with circle
+  curl -u "${INPUT_USER}:${INPUT__PASSWORD}" \
+    -H "Title: Job cancelled. ${GITHUB_REPOSITORY}/${GITHUB_REF}" \
+    -H "Priority: low" \
+    -H "Tags: x" \
+    -d "Job cancelled. See $GITHUB_SERVER_URL/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_NUMBER} for details" \
+    "${INPUT_HOST}${INPUT_TOPIC}"
+else
+  echo "Unknown job status $1"
+  exit 1
+fi
