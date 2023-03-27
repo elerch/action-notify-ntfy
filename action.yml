@@ -1,0 +1,23 @@
+name: 'Ntfy notification'
+description: 'Notifies job status via ntfy'
+author: 'lobo'
+inputs:
+  host:
+    description: 'Ntfy host'
+    required: true
+  topic:
+    description: 'Ntfy topic'
+    required: true
+  status:
+    description: 'Job status. Use ${{ job.status }} for most cases'
+    required: true
+    default: '${{ job.status }}'
+  user:
+    description: 'Username for ntfy server'
+    required: true # should be false, but we'll do authenticated sessions only for now
+  password:
+    description: 'Password for ntfy server'
+    required: true # should be false, but we'll do authenticated sessions only for now
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
