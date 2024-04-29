@@ -9,7 +9,7 @@ inputs:
     description: 'Ntfy topic'
     required: true
   status:
-    description: 'Job status. Use ${{ job.status }} for most cases'
+    description: 'Job status. Use expression {{ job.status }} for most cases'
     required: true
   user:
     description: 'Username for ntfy server'
