@@ -9,8 +9,9 @@ inputs:
     description: 'Ntfy topic'
     required: true
   status:
-    description: 'Job status. Use expression {{ job.status }} for most cases'
-    required: true
+    description: 'Job status. Defaults to the status of the job running this step'
+    required: false
+    default: '${{ job.status }}'
   user:
     description: 'Username for ntfy server'
     required: true # should be false, but we'll do authenticated sessions only for now
